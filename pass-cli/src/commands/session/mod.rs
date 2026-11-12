@@ -58,7 +58,7 @@ pub async fn run(
             idle_timeout: lock_time,
         } => create_lock::run(client, store, Some(lock_time)).await,
         SessionCommands::Lock => lock::run(client, store).await,
-        SessionCommands::Unlock => unlock::run(client, store).await,
+        SessionCommands::Unlock => unlock::run(client).await,
         SessionCommands::RemoveLock => remove_lock::run(client, store).await,
     }
 }

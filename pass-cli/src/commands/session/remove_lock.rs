@@ -19,16 +19,14 @@
 
 use crate::helpers::CliPassClient as PassClient;
 use crate::utils::ask_for_input;
-use anyhow::{Context, Result, bail};
+use anyhow::{Context, Result};
 use parking_lot::RwLock;
 use pass::auth::store::PassSessionStore;
 use std::sync::Arc;
 
 pub async fn run(client: PassClient, store: Arc<RwLock<PassSessionStore>>) -> Result<()> {
-    if store.read().get_session_lock_after_seconds().is_none() {
-        bail!("Session is not locked");
-    }
-
+    // See unlock.rs: the stored session_lock_after_seconds is a cache, not the authority, so a
+    // stale `None` must not be able to refuse the one command that removes a lock.
     let pin = ask_for_input("Enter lock code: ", true).context("Error reading lock code")?;
 
     client
