@@ -35,7 +35,7 @@ pub enum SessionCommands {
     CreateLock {
         #[arg(
             long,
-            help = "Time in seconds before the session auto-unlocks (min 30, max 900)",
+            help = "Seconds of inactivity after which the session locks (min 30, max 900)",
             default_value = "300"
         )]
         idle_timeout: u32,
